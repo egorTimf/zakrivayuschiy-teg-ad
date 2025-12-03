@@ -17,14 +17,14 @@
   font-variation-settings: 'wght' var(--main-font-weight, 400);
   background-image: var(--background-gradient);
   background-size: cover;
-	background-attachment: fixed;
+  background-attachment: fixed;
   width: clamp(375px, 30.5164vw + 260.5635px, 700px);
 }
 
 .header {
   display: flex;
-	flex-direction: column;
-	gap:20px;
+  flex-direction: column;
+  gap: 20px;
   font-family: var(--accent-font, fantasy);
   margin: 100px 0;
   padding: var(--header-padding) 0;
@@ -45,7 +45,7 @@
   font-weight: var(--main-font-weight);
 }
 
-.border__block { 
+.border__block {
   border: 2px solid black;
 }
 
@@ -88,14 +88,36 @@
   mix-blend-mode: hard-light;
   font-family: var(--accent-font);
   font-size: 14px;
-  
   color: #000;
   z-index: 2;
-  text-shadow: 
-    -1px -1px 0 var(--stroke-color),
-     1px -1px 0 var(--stroke-color),
-    -1px  1px 0 var(--stroke-color),
-     1px  1px 0 var(--stroke-color);
+  
+  /* Fallback для браузеров без поддержки text-stroke */
+  -webkit-text-stroke: 1px var(--stroke-color, #fff);
+  text-stroke: 1px var(--stroke-color, #fff);
+  
+  /* Проверка поддержки text-stroke и -webkit-text-stroke */
+  /* Если браузер не поддерживает, используем text-shadow */
+}
+
+/* Проверка поддержки text-stroke */
+@supports ((text-stroke: 1px #000) or (-webkit-text-stroke: 1px #000)) {
+  .card__image-label {
+    text-shadow: none;
+    -webkit-text-stroke: 1px var(--stroke-color, #fff);
+    text-stroke: 1px var(--stroke-color, #fff);
+    paint-order: stroke fill;
+  }
+}
+
+/* Fallback для браузеров без поддержки text-stroke */
+@supports not ((text-stroke: 1px #000) or (-webkit-text-stroke: 1px #000)) {
+  .card__image-label {
+    text-shadow: 
+      -1px -1px 0 var(--stroke-color, #fff),
+      1px -1px 0 var(--stroke-color, #fff),
+      -1px 1px 0 var(--stroke-color, #fff),
+      1px 1px 0 var(--stroke-color, #fff);
+  }
 }
 
 .card__image {
@@ -165,7 +187,7 @@
 }
 
 .card__icon-button {
-  margin-top: 2px  ;
+  margin-top: 2px;
   border: none;
   background-color: inherit;
 }
@@ -238,7 +260,6 @@
 }
 
 @media (width <= 375px) {
-
   .main {
     padding-bottom: 100px;
   }
@@ -298,4 +319,4 @@
 
 .brown-red {
   filter: hue-rotate(90deg) blur(1px) contrast(0.5) saturate(1.5);
- }
+}
